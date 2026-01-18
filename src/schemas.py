@@ -5,7 +5,7 @@ Schema definitions for event validation.
 
 REQUIRED_EVENT_FIELDS = {
     "event_id",
-    "dataset",
-    "ingested_at",
+    "event_type",
+    "produced_at",
     "payload"
 }

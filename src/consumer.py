@@ -3,6 +3,14 @@ Reads events from Kafka, validates them, and saves them to MongoDB.
 """
 from kafka_client import get_kafka_consumer
 from mongo_engine import get_mongodb
+from schemas import REQUIRED_EVENT_FIELDS
+
+
+def validate_event(event: dict) -> bool:
+    """Validates the event against the required schema."""
+    if not isinstance(event, dict):
+        return False
+    return all(field in event for field in REQUIRED_EVENT_FIELDS)
 
 
 def run_consumer(kafka_topic, kafka_broker, mongo_uri):
