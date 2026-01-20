@@ -6,7 +6,7 @@ from mongo_engine import get_mongodb
 from schemas import REQUIRED_EVENT_FIELDS
 
 
-def validate_event(event: dict) -> bool:
+def is_event_valid(event: dict) -> bool:
     """Validates the event against the required schema."""
     if not isinstance(event, dict):
         return False
@@ -23,7 +23,7 @@ def run_consumer(kafka_topic, kafka_broker, mongo_uri):
 
     for msg in kafka_consumer:
         event = msg.value.decode('utf-8')
-        if validate_event(event):
+        if is_event_valid(event):
             collection.insert_one({"event": event})
         else:
             print(f"Invalid event: {event}")

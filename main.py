@@ -11,7 +11,8 @@ if __name__ == "__main__":
     role = ROLE.lower()
 
     if role == "producer":
-        run_producer(kafka_topic=KAFKA_TOPIC,
+        run_producer(file_path="./data/netflix_tv_shows.csv",
+                     kafka_topic=KAFKA_TOPIC,
                      kafka_broker=KAFKA_BROKER)
     elif role == "consumer":
         run_consumer(kafka_topic=KAFKA_TOPIC,
