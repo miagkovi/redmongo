@@ -9,25 +9,43 @@ services:
     ports:
       - "9092:9092"
 
+  redpanda-init:
+    image: docker.redpanda.com/redpandadata/redpanda:latest
+    entrypoint: ["/bin/bash", "-c"]
+    command: >
+      "
+      sleep 5 &&
+      rpk topic create events
+      --partitions 1
+      --replicas 1
+      --brokers redpanda:29092
+      "
+    depends_on:
+      - redpanda
+
   mongodb:
     image: mongo:latest
     ports:
       - "27017:27017"
 
-  app-producer:
+  producer:
     build: .
     depends_on:
       - redpanda
+      - redpanda-init
     environment:
       - ROLE=producer
       - KAFKA_BROKER=redpanda:29092
+      - KAFKA_TOPIC=events
 
-  app-consumer:
+  consumer:
     build: .
     depends_on:
       - redpanda
+      - redpanda-init
       - mongodb
     environment:
       - ROLE=consumer
       - KAFKA_BROKER=redpanda:29092
+      - KAFKA_TOPIC=events
       - MONGODB_URI=mongodb://mongodb:27017

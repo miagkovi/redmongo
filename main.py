@@ -2,8 +2,8 @@
 Main entry point for the application.
 Decides whether to run as a producer or consumer based on configuration.
 """
-from producer import run_producer
-from consumer import run_consumer
+from src.producer import run_producer
+from src.consumer import run_consumer
 from config import ROLE, KAFKA_TOPIC, MONGO_URI, KAFKA_BROKER
 
 
