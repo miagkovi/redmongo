@@ -5,20 +5,23 @@ services:
       - redpanda start
       - --overprovisioned
       - --smp 1
-      - --kafka-addr PLAINTEXT://0.0.0.0:29092,OUTSIDE://0.0.0.0:9092
-    ports:
-      - "9092:9092"
+      - --memory 1G
+      - --reserve-memory 0M
+      - --node-id 0
+      - --check=false
+      - --kafka-addr PLAINTEXT://0.0.0.0:9092
+      - --advertise-kafka-addr PLAINTEXT://redpanda:9092
 
   redpanda-init:
     image: docker.redpanda.com/redpandadata/redpanda:latest
     entrypoint: ["/bin/bash", "-c"]
     command: >
       "
-      sleep 5 &&
+      sleep 30 &&
       rpk topic create events
       --partitions 1
       --replicas 1
-      --brokers redpanda:29092
+      --brokers redpanda:9092
       "
     depends_on:
       - redpanda
@@ -35,7 +38,7 @@ services:
       - redpanda-init
     environment:
       - ROLE=producer
-      - KAFKA_BROKER=redpanda:29092
+      - KAFKA_BROKER=redpanda:9092
       - KAFKA_TOPIC=events
 
   consumer:
@@ -46,6 +49,6 @@ services:
       - mongodb
     environment:
       - ROLE=consumer
-      - KAFKA_BROKER=redpanda:29092
+      - KAFKA_BROKER=redpanda:9092
       - KAFKA_TOPIC=events
       - MONGODB_URI=mongodb://mongodb:27017

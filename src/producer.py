@@ -5,7 +5,7 @@ import csv
 import time
 import uuid
 from pathlib import Path
-from kafka_client import get_kafka_producer
+from src.kafka_client import get_kafka_producer
 
 
 def read_csv(file_path: Path):

@@ -1,9 +1,9 @@
 """
 Reads events from Kafka, validates them, and saves them to MongoDB.
 """
-from kafka_client import get_kafka_consumer
-from mongo_engine import get_mongodb
-from schemas import REQUIRED_EVENT_FIELDS
+from src.kafka_client import get_kafka_consumer
+from src.mongo_engine import get_mongodb
+from src.schemas import REQUIRED_EVENT_FIELDS
 
 
 def is_event_valid(event: dict) -> bool:
