@@ -13,10 +13,11 @@ def is_event_valid(event: dict) -> bool:
     return all(field in event for field in REQUIRED_EVENT_FIELDS)
 
 
-def run_consumer(kafka_topic, kafka_broker, mongo_uri):
+def run_consumer(kafka_topic, kafka_broker, group_id, mongo_uri):
     """Consumes events from Kafka, validates, and stores them in MongoDB."""
     kafka_consumer = get_kafka_consumer(topic=kafka_topic,
-                                        broker=kafka_broker)
+                                        broker=kafka_broker,
+                                        group_id=group_id)
     mongo_client = get_mongodb(uri=mongo_uri)
     db = mongo_client.mydatabase
     collection = db.events

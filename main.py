@@ -4,7 +4,7 @@ Decides whether to run as a producer or consumer based on configuration.
 """
 from src.producer import run_producer
 from src.consumer import run_consumer
-from config import ROLE, KAFKA_TOPIC, MONGO_URI, KAFKA_BROKER
+from config import ROLE, KAFKA_TOPIC, MONGO_URI, KAFKA_BROKER, GROUP_ID
 
 
 if __name__ == "__main__":
@@ -17,6 +17,7 @@ if __name__ == "__main__":
     elif role == "consumer":
         run_consumer(kafka_topic=KAFKA_TOPIC,
                      kafka_broker=KAFKA_BROKER,
+                     group_id=GROUP_ID,
                      mongo_uri=MONGO_URI)
     else:
         raise RuntimeError(f"Unknown role: {role}")
