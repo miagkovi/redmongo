@@ -1,6 +1,7 @@
 """
 Reads events from Kafka, validates them, and saves them to MongoDB.
 """
+import json
 from src.kafka_client import get_kafka_consumer
 from src.mongo_engine import get_mongodb
 from src.schemas import REQUIRED_EVENT_FIELDS
@@ -15,15 +16,21 @@ def is_event_valid(event: dict) -> bool:
 
 def run_consumer(kafka_topic, kafka_broker, group_id, mongo_uri):
     """Consumes events from Kafka, validates, and stores them in MongoDB."""
-    kafka_consumer = get_kafka_consumer(topic=kafka_topic,
-                                        broker=kafka_broker,
-                                        group_id=group_id)
+    consumer = get_kafka_consumer(topic=kafka_topic,
+                                  broker=kafka_broker,
+                                  group_id=group_id)
     mongo_client = get_mongodb(uri=mongo_uri)
     db = mongo_client.mydatabase
     collection = db.events
 
-    for msg in kafka_consumer:
-        event = msg.value.decode('utf-8')
+    while True:
+        msg = consumer.poll(timeout=1.0)
+        if msg is None:
+            continue
+        if msg.error():
+            print(f"Consumer error: {msg.error()}")
+            continue
+        event = json.loads(msg.value.decode('utf-8'))
         if is_event_valid(event):
             collection.insert_one({"event": event})
         else:
