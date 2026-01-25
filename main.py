@@ -11,10 +11,12 @@ if __name__ == "__main__":
     role = ROLE.lower()
 
     if role == "producer":
+        print("Starting producer...")
         run_producer(file_path="./data/netflix_tv_shows.csv",
                      kafka_topic=KAFKA_TOPIC,
                      kafka_broker=KAFKA_BROKER)
     elif role == "consumer":
+        print("Starting consumer...")
         run_consumer(kafka_topic=KAFKA_TOPIC,
                      kafka_broker=KAFKA_BROKER,
                      group_id=GROUP_ID,

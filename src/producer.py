@@ -25,7 +25,7 @@ def build_event(row: dict) -> bytes:
     if row is None or not isinstance(row, dict):
         raise RuntimeError("Invalid row data provided for event building.")
     event = {
-        "event_id": uuid.uuid4(),
+        "event_id": str(uuid.uuid4()),
         "event_type": "data_record",
         "produced_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "payload": row
@@ -39,7 +39,8 @@ def run_producer(file_path, kafka_topic, kafka_broker):
     for row in read_csv(file_path):
         serialized_event = build_event(row)
         producer.produce(topic=kafka_topic,
-                               value=serialized_event)
+                         value=serialized_event)
         producer.poll(0)
+        print(f"Produced event for row: {row}")
         time.sleep(1)  # Simulate delay
     producer.flush()
