@@ -1,6 +1,5 @@
 """
-Main entry point for the application.
-Decides whether to run as a producer or consumer based on configuration.
+Main entry point for the Kafka producer/consumer application.
 """
 from src.producer import run_producer
 from src.consumer import run_consumer

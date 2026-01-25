@@ -25,9 +25,9 @@ def build_event(row: dict) -> bytes:
     if row is None or not isinstance(row, dict):
         raise RuntimeError("Invalid row data provided for event building.")
     event = {
-        "event_id": str(uuid.uuid4()),
-        "event_type": "data_record",
-        "produced_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        "event_id": str(uuid.uuid4()), # JSON serializable unique ID
+        "event_type": "insert",
+        "produced_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()), # ISO 8601 format
         "payload": row
     }
     return json.dumps(event).encode('utf-8')
