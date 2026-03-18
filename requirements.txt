@@ -1,4 +1,11 @@
 confluent-kafka==2.13.0
 dnspython==2.8.0
+hypothesis==6.151.9
+iniconfig==2.3.0
+packaging==26.0
+pluggy==1.6.0
+Pygments==2.19.2
 pymongo==4.16.0
+pytest==9.0.2
+sortedcontainers==2.4.0
 tenacity==9.1.2
