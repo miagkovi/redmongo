@@ -72,3 +72,9 @@ The pipeline includes:
 - Retry logic for Kafka connection
 - Retry logic for MongoDB connection
 - Resilience to service startup order
+
+### Run Hypothesis tests
+
+```sh
+pytest -v
+```
